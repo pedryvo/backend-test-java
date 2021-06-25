@@ -1,3 +1,4 @@
 class Company < ApplicationRecord
-  has_one :car_slot
+  has_one :slots_field
+  has_many :parking_tickets
 end

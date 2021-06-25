@@ -5,13 +5,9 @@ one:
   ssn: MyString
   address: MyString
   phone_number: MyString
-  motorcycle_qnt: 1
-  cars_qnt: 1
 
 two:
   name: MyString
   ssn: MyString
   address: MyString
   phone_number: MyString
-  motorcycle_qnt: 1
-  cars_qnt: 1
