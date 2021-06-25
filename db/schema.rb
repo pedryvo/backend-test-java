@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_203319) do
+ActiveRecord::Schema.define(version: 2021_06_25_210436) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -19,7 +19,8 @@ ActiveRecord::Schema.define(version: 2021_06_25_203319) do
     t.string "phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "hour_price"
+    t.float "hour_price_car"
+    t.float "hour_price_motorcycle"
   end
 
   create_table "parking_tickets", force: :cascade do |t|
