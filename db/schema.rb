@@ -10,17 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_171916) do
-
-  create_table "cars", force: :cascade do |t|
-    t.string "brand"
-    t.string "model"
-    t.string "color"
-    t.string "license_plate"
-    t.string "type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
+ActiveRecord::Schema.define(version: 2021_06_25_201943) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -40,6 +30,16 @@ ActiveRecord::Schema.define(version: 2021_06_25_171916) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_slots_fields_on_company_id"
+  end
+
+  create_table "vehicles", force: :cascade do |t|
+    t.string "brand"
+    t.string "model"
+    t.string "color"
+    t.string "license_plate"
+    t.integer "kind"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "slots_fields", "companies"

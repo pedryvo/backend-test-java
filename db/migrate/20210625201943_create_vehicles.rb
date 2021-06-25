@@ -1,11 +1,11 @@
-class CreateCars < ActiveRecord::Migration[6.1]
+class CreateVehicles < ActiveRecord::Migration[6.1]
   def change
-    create_table :cars do |t|
+    create_table :vehicles do |t|
       t.string :brand
       t.string :model
       t.string :color
       t.string :license_plate
-      t.string :type
+      t.integer :kind
 
       t.timestamps
     end
