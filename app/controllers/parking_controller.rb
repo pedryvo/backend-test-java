@@ -7,28 +7,32 @@ class ParkingController < ApplicationController
     has_keys = %w[company_id vehicle_id park_action].all? {|k| ticket_data.key? k}
 
     if has_keys
-      if is_vehicle_parked?(ticket_data['vehicle_id']) && ticket_data['park_action'] == 'entrance'
-        render json: {'message': 'Vehicle is already parked.'}, status: :forbidden
-      else
-        if ticket_data['park_action'] == 'entrance'
-          parking_ticket = ParkingTicket.create!( company_id: ticket_data['company_id'],
-                                                  vehicle_id: ticket_data['vehicle_id'],
-                                                  status: :open)
-          if parking_ticket
-            render json: parking_ticket, status: :created
-            occupy_slot(ticket_data['company_id'], ticket_data['vehicle_id'])
-          else
-            render json: parking_ticket.full_error_with_messages, status: :bad_request
-          end
-        elsif ticket_data['park_action'] == 'exit'
-          parking_ticket = ParkingTicket.where(vehicle_id: ticket_data['vehicle_id'], status: :open).first
-          if parking_ticket.update_attribute(:status, :finished)
-            render json: parking_ticket, status: :accepted
-            free_slot(ticket_data['company_id'], ticket_data['vehicle_id'])
-          else
-            render json: parking_ticket.full_error_with_messages, status: :bad_request
+      unless there_are_free_slots?(ticket_data['company_id'], ticket_data['vehicle_id'])
+        if is_vehicle_parked?(ticket_data['vehicle_id']) && ticket_data['park_action'] == 'entrance'
+          render json: {'message': 'Vehicle is already parked.'}, status: :forbidden
+        else
+          if ticket_data['park_action'] == 'entrance'
+            parking_ticket = ParkingTicket.create!( company_id: ticket_data['company_id'],
+                                                    vehicle_id: ticket_data['vehicle_id'],
+                                                    status: :open)
+            if parking_ticket
+              render json: parking_ticket, status: :created
+              occupy_slot(ticket_data['company_id'], ticket_data['vehicle_id'])
+            else
+              render json: parking_ticket.full_error_with_messages, status: :bad_request
+            end
+          elsif ticket_data['park_action'] == 'exit'
+            parking_ticket = ParkingTicket.where(vehicle_id: ticket_data['vehicle_id'], status: :open).first
+            if parking_ticket.update_attribute(:status, :finished)
+              render json: parking_ticket, status: :accepted
+              free_slot(ticket_data['company_id'], ticket_data['vehicle_id'])
+            else
+              render json: parking_ticket.full_error_with_messages, status: :bad_request
+            end
           end
         end
+      else
+        render json: {'message': 'Sorry, there are not free slots to park.'}, status: :forbidden
       end
     else
       render json: {'message': 'Error. Please check your payload.'}, status: :forbidden
