@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_201943) do
+ActiveRecord::Schema.define(version: 2021_06_25_203319) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -19,6 +19,17 @@ ActiveRecord::Schema.define(version: 2021_06_25_201943) do
     t.string "phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "hour_price"
+  end
+
+  create_table "parking_tickets", force: :cascade do |t|
+    t.integer "vehicle_id", null: false
+    t.integer "company_id", null: false
+    t.integer "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_parking_tickets_on_company_id"
+    t.index ["vehicle_id"], name: "index_parking_tickets_on_vehicle_id"
   end
 
   create_table "slots_fields", force: :cascade do |t|
@@ -42,5 +53,7 @@ ActiveRecord::Schema.define(version: 2021_06_25_201943) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "parking_tickets", "companies"
+  add_foreign_key "parking_tickets", "vehicles"
   add_foreign_key "slots_fields", "companies"
 end
